@@ -7,13 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 圖標庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts Inter & Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', 'Microsoft JhengHei', sans-serif;
+            font-family: 'Noto Sans TC', sans-serif;
             touch-action: manipulation;
             user-select: none;
+            font-size: 1.25rem; /* 基礎字體放大 */
         }
         /* 抽卡動畫效果 */
         .card-flip-inner {
@@ -31,49 +32,55 @@
         }
         /* 霓虹光芒特效 */
         .glow-card {
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.6), 0 0 50px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 35px rgba(234, 179, 8, 0.7), 0 0 70px rgba(16, 185, 129, 0.5);
         }
         .glow-button {
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
             transition: all 0.2s ease-in-out;
         }
         .glow-button:hover {
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
-            transform: translateY(-2px);
+            box-shadow: 0 0 35px rgba(16, 185, 129, 0.9);
+            transform: scale(1.03);
+        }
+        .start-btn-glow {
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.8);
+        }
+        .start-btn-glow:hover {
+            box-shadow: 0 0 50px rgba(245, 158, 11, 1);
+            transform: scale(1.05);
         }
     </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body class="bg-slate-950 text-white min-h-screen flex flex-col justify-between overflow-x-hidden">
 
-    <!-- 頂部標題與狀態列 (大螢幕優化) -->
-    <header class="bg-slate-800/90 border-b border-slate-700 px-6 py-4 flex flex-wrap justify-between items-center shadow-xl backdrop-blur-md sticky top-0 z-30">
-        <div class="flex items-center gap-4">
-            <div class="bg-emerald-500 text-slate-900 p-3 rounded-2xl font-black text-2xl shadow-lg">
+    <!-- 頂部標題與狀態列 (針對 3 公尺遠距離觀看的超大規格) -->
+    <header class="bg-slate-900 border-b-2 border-slate-700 px-8 py-5 flex flex-wrap justify-between items-center shadow-2xl sticky top-0 z-30">
+        <div class="flex items-center gap-5">
+            <div class="bg-emerald-500 text-slate-950 p-4 rounded-3xl font-black text-3xl md:text-4xl shadow-xl">
                 <i class="fa-solid fa-leaf"></i>
             </div>
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-emerald-400 tracking-wide">實驗 2.3 光合作用探討 ✦ 獵人試煉</h1>
-                <p class="text-slate-400 text-sm md:text-base">國中自然 1 上課本第 71~72 頁 ｜ 大螢幕互動教學</p>
+                <h1 class="text-3xl md:text-4xl font-black text-emerald-400 tracking-wider">實驗 2.3 光合作用探討 ✦ 獵人試煉</h1>
             </div>
         </div>
 
         <!-- 關卡導覽與計時器顯示 -->
-        <div class="flex items-center gap-4 mt-2 md:mt-0">
-            <!-- 實時計時器 -->
-            <div class="bg-slate-900 border-2 border-amber-500/80 px-5 py-2 rounded-2xl flex items-center gap-3 shadow-inner">
-                <i class="fa-solid fa-stopwatch text-amber-400 text-2xl animate-pulse"></i>
-                <span id="game-timer" class="text-2xl font-mono font-extrabold text-amber-300">00:00</span>
+        <div class="flex items-center gap-6 mt-4 lg:mt-0">
+            <!-- 超大實時計時器 -->
+            <div class="bg-slate-900 border-4 border-amber-500 px-6 py-3 rounded-3xl flex items-center gap-4 shadow-inner">
+                <i class="fa-solid fa-stopwatch text-amber-400 text-3xl md:text-4xl animate-pulse"></i>
+                <span id="game-timer" class="text-3xl md:text-4xl font-mono font-black text-amber-300 tracking-wider">00:00</span>
             </div>
 
-            <!-- 關卡指示器 -->
-            <div class="flex bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700">
-                <button id="tab-lvl-1" onclick="switchLevel(1)" class="px-4 py-2 rounded-xl font-bold text-base transition-all bg-emerald-600 text-white shadow-md">
+            <!-- 關卡指示標籤 -->
+            <div class="flex bg-slate-900 p-2 rounded-3xl border-2 border-slate-700 gap-2">
+                <button id="tab-lvl-1" onclick="switchLevel(1)" class="px-5 py-3 rounded-2xl font-black text-xl transition-all bg-emerald-600 text-white shadow-lg">
                     第一關：步驟排序
                 </button>
-                <button id="tab-lvl-2" onclick="switchLevel(2)" class="px-4 py-2 rounded-xl font-bold text-base transition-all text-slate-400 hover:text-white">
+                <button id="tab-lvl-2" onclick="switchLevel(2)" class="px-5 py-3 rounded-2xl font-black text-xl transition-all text-slate-400 hover:text-white">
                     第二關：目的配對
                 </button>
-                <button id="tab-lvl-3" onclick="switchLevel(3)" class="px-4 py-2 rounded-xl font-bold text-base transition-all text-slate-400 hover:text-white">
+                <button id="tab-lvl-3" onclick="switchLevel(3)" class="px-5 py-3 rounded-2xl font-black text-xl transition-all text-slate-400 hover:text-white">
                     第三關：大挑戰
                 </button>
             </div>
@@ -81,55 +88,58 @@
     </header>
 
     <!-- 主要遊戲內容區 -->
-    <main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col justify-center">
+    <main class="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full flex flex-col justify-center">
 
         <!-- ==================== 第一關：實驗步驟排列順序 ==================== -->
         <section id="level-1" class="flex flex-col gap-6">
-            <div class="bg-slate-800/80 rounded-3xl border border-slate-700 p-6 md:p-8 shadow-2xl backdrop-blur-sm">
-                <div class="border-b border-slate-700 pb-4 mb-6 flex justify-between items-center">
+            <!-- 準備開始覆蓋層 (挑戰開始) -->
+            <div id="lvl1-start-screen" class="bg-slate-900/95 rounded-3xl border-4 border-amber-500/80 p-10 shadow-2xl text-center flex flex-col items-center justify-center min-h-[500px]">
+                <div class="bg-amber-500/20 p-6 rounded-full border-4 border-amber-400 mb-6">
+                    <i class="fa-solid fa-flag-checkered text-6xl text-amber-400"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-amber-300 mb-4">第一關：實驗步驟排列順序</h2>
+                <p class="text-slate-200 text-2xl font-bold max-w-3xl leading-relaxed mb-8">
+                    請按下方「開始挑戰」進入關卡！開始後將啟動計時，請點擊選項將 4 個實驗操作放入正確流程位置。
+                </p>
+                <button onclick="startLevelChallenge(1)" class="px-12 py-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-3xl rounded-3xl start-btn-glow transition-all">
+                    <i class="fa-solid fa-play mr-3"></i> 挑戰開始
+                </button>
+            </div>
+
+            <!-- 關卡遊戲內容 (預設隱藏) -->
+            <div id="lvl1-game-screen" class="hidden flex-col gap-6 bg-slate-900/90 rounded-3xl border-2 border-slate-700 p-8 md:p-10 shadow-2xl">
+                <div class="border-b-2 border-slate-700 pb-5 flex justify-between items-center">
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-400">第一關：實驗步驟排列順序</h2>
-                        <p class="text-slate-300 text-lg mt-1">請點擊下方亂序的步驟卡片，依正確實驗流程（1~4）將其加入排序欄中。</p>
+                        <h2 class="text-3xl md:text-4xl font-black text-emerald-400">第一關：實驗步驟排序</h2>
+                        <p class="text-slate-200 text-xl font-bold mt-2">請將亂序卡片依照正確實驗步驟（1 ➔ 4）放進放置區。</p>
                     </div>
-                    <button onclick="resetLevel1()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl font-bold transition-all">
-                        <i class="fa-solid fa-rotate-left mr-1"></i> 重置
+                    <button onclick="resetLevel1()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-2xl font-black text-lg border-2 border-slate-600 transition-all">
+                        <i class="fa-solid fa-rotate-left mr-2"></i> 重置重排
                     </button>
                 </div>
 
                 <!-- 排序解答投放欄 -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold text-amber-300 mb-3 flex items-center gap-2">
+                <div class="my-4">
+                    <h3 class="text-2xl font-black text-amber-300 mb-4 flex items-center gap-3">
                         <i class="fa-solid fa-list-ol"></i> 正確實驗順序放置區：
                     </h3>
-                    <div id="sort-slots" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div id="sort-slots" class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <!-- 4 個空槽位 -->
-                        <div class="slot border-2 border-dashed border-slate-600 rounded-2xl min-h-[110px] p-4 flex flex-col justify-center items-center text-slate-500 font-bold text-lg bg-slate-900/50" data-slot="0">
-                            步驟 1
-                        </div>
-                        <div class="slot border-2 border-dashed border-slate-600 rounded-2xl min-h-[110px] p-4 flex flex-col justify-center items-center text-slate-500 font-bold text-lg bg-slate-900/50" data-slot="1">
-                            步驟 2
-                        </div>
-                        <div class="slot border-2 border-dashed border-slate-600 rounded-2xl min-h-[110px] p-4 flex flex-col justify-center items-center text-slate-500 font-bold text-lg bg-slate-900/50" data-slot="2">
-                            步驟 3
-                        </div>
-                        <div class="slot border-2 border-dashed border-slate-600 rounded-2xl min-h-[110px] p-4 flex flex-col justify-center items-center text-slate-500 font-bold text-lg bg-slate-900/50" data-slot="3">
-                            步驟 4
-                        </div>
                     </div>
                 </div>
 
                 <!-- 待選擇的亂序卡片池 -->
-                <div>
-                    <h3 class="text-xl font-bold text-slate-300 mb-3"><i class="fa-solid fa-hand-pointer mr-1"></i> 點擊選取步驟：</h3>
-                    <div id="step-pool" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="mt-4">
+                    <h3 class="text-2xl font-black text-slate-200 mb-4"><i class="fa-solid fa-hand-pointer mr-2"></i> 點擊下方卡片選擇步驟：</h3>
+                    <div id="step-pool" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- 亂序卡片由 JS 動態產生 -->
                     </div>
                 </div>
 
                 <!-- 送出驗證按鈕 -->
                 <div class="mt-8 text-right">
-                    <button id="submit-lvl-1" onclick="checkLevel1()" class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-black text-xl rounded-2xl glow-button transition-all">
-                        驗證步驟順序 <i class="fa-solid fa-circle-check ml-2"></i>
+                    <button id="submit-lvl-1" onclick="checkLevel1()" class="px-10 py-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-2xl rounded-3xl glow-button transition-all">
+                        驗證步驟順序 <i class="fa-solid fa-circle-check ml-3"></i>
                     </button>
                 </div>
             </div>
@@ -137,40 +147,55 @@
 
         <!-- ==================== 第二關：實驗步驟與目的配對 ==================== -->
         <section id="level-2" class="hidden flex-col gap-6">
-            <div class="bg-slate-800/80 rounded-3xl border border-slate-700 p-6 md:p-8 shadow-2xl backdrop-blur-sm">
-                <div class="border-b border-slate-700 pb-4 mb-6 flex justify-between items-center">
+            <!-- 準備開始覆蓋層 (挑戰開始) -->
+            <div id="lvl2-start-screen" class="bg-slate-900/95 rounded-3xl border-4 border-amber-500/80 p-10 shadow-2xl text-center flex flex-col items-center justify-center min-h-[500px]">
+                <div class="bg-amber-500/20 p-6 rounded-full border-4 border-amber-400 mb-6">
+                    <i class="fa-solid fa-link text-6xl text-amber-400"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-amber-300 mb-4">第二關：實驗步驟與目的配對</h2>
+                <p class="text-slate-200 text-2xl font-bold max-w-3xl leading-relaxed mb-8">
+                    請按下方「開始挑戰」進入關卡！點擊左側步驟後再點擊右側相對應的實驗目的進行連線配對。
+                </p>
+                <button onclick="startLevelChallenge(2)" class="px-12 py-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-3xl rounded-3xl start-btn-glow transition-all">
+                    <i class="fa-solid fa-play mr-3"></i> 挑戰開始
+                </button>
+            </div>
+
+            <!-- 關卡遊戲內容 -->
+            <div id="lvl2-game-screen" class="hidden flex-col gap-6 bg-slate-900/90 rounded-3xl border-2 border-slate-700 p-8 md:p-10 shadow-2xl">
+                <div class="border-b-2 border-slate-700 pb-5 flex justify-between items-center">
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-400">第二關：實驗步驟與目的配對</h2>
-                        <p class="text-slate-300 text-lg mt-1">步驟已依序排列，請點擊左側步驟後，再點擊右側相對應的「實驗目的」進行配對！</p>
+                        <h2 class="text-3xl md:text-4xl font-black text-emerald-400">第二關：步驟與目的配對</h2>
+                        <p class="text-slate-200 text-xl font-bold mt-2">請先點擊左側步驟，再點擊右側相對應的「實驗目的」進行配對！</p>
                     </div>
-                    <button onclick="resetLevel2()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl font-bold transition-all">
-                        <i class="fa-solid fa-rotate-left mr-1"></i> 重置配對
+                    <button onclick="resetLevel2()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-2xl font-black text-lg border-2 border-slate-600 transition-all">
+                        <i class="fa-solid fa-rotate-left mr-2"></i> 重置配對
                     </button>
                 </div>
 
                 <!-- 配對遊戲主區域 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- 左側：固定順序的步驟 -->
-                    <div class="flex flex-col gap-4">
-                        <h3 class="text-xl font-bold text-amber-300"><i class="fa-solid fa-vial"></i> 實驗步驟（已排好順序）</h3>
-                        <div id="match-steps" class="flex flex-col gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-4">
+                    <!-- 左側：步驟 -->
+                    <div class="flex flex-col gap-5">
+                        <h3 class="text-2xl font-black text-amber-300"><i class="fa-solid fa-vial mr-2"></i> 實驗步驟（已排好順序）</h3>
+                        <div id="match-steps" class="flex flex-col gap-5">
                             <!-- JS 渲染步驟區塊 -->
                         </div>
                     </div>
 
-                    <!-- 右側：亂序的實驗目的 -->
-                    <div class="flex flex-col gap-4">
-                        <h3 class="text-xl font-bold text-cyan-300"><i class="fa-solid fa-bullseye"></i> 實驗目的（點擊進行配對）</h3>
-                        <div id="match-purposes" class="flex flex-col gap-4">
-                            <!-- JS 渲染亂序目的 -->
+                    <!-- 右側：目的 -->
+                    <div class="flex flex-col gap-5">
+                        <h3 class="text-2xl font-black text-cyan-300"><i class="fa-solid fa-bullseye mr-2"></i> 實驗目的（點擊連線）</h3>
+                        <div id="match-purposes" class="flex flex-col gap-5">
+                            <!-- JS 渲染目的 -->
                         </div>
                     </div>
                 </div>
 
                 <!-- 送出驗證按鈕 -->
                 <div class="mt-8 text-right">
-                    <button id="submit-lvl-2" onclick="checkLevel2()" class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-black text-xl rounded-2xl glow-button transition-all">
-                        提交配對答案 <i class="fa-solid fa-circle-check ml-2"></i>
+                    <button id="submit-lvl-2" onclick="checkLevel2()" class="px-10 py-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-2xl rounded-3xl glow-button transition-all">
+                        提交配對答案 <i class="fa-solid fa-circle-check ml-3"></i>
                     </button>
                 </div>
             </div>
@@ -178,36 +203,51 @@
 
         <!-- ==================== 第三關：課堂大挑戰 (問答) ==================== -->
         <section id="level-3" class="hidden flex-col gap-6">
-            <div class="bg-slate-800/80 rounded-3xl border border-slate-700 p-6 md:p-8 shadow-2xl backdrop-blur-sm flex flex-col justify-between min-h-[480px]">
+            <!-- 準備開始覆蓋層 (挑戰開始) -->
+            <div id="lvl3-start-screen" class="bg-slate-900/95 rounded-3xl border-4 border-amber-500/80 p-10 shadow-2xl text-center flex flex-col items-center justify-center min-h-[500px]">
+                <div class="bg-amber-500/20 p-6 rounded-full border-4 border-amber-400 mb-6">
+                    <i class="fa-solid fa-brain text-6xl text-amber-400"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-amber-300 mb-4">第三關：課堂觀念大挑戰</h2>
+                <p class="text-slate-200 text-2xl font-bold max-w-3xl leading-relaxed mb-8">
+                    請按下方「開始挑戰」進入關卡！測試您對光合作用實驗控制變因、操作細節與結果推論的掌握度。
+                </p>
+                <button onclick="startLevelChallenge(3)" class="px-12 py-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-3xl rounded-3xl start-btn-glow transition-all">
+                    <i class="fa-solid fa-play mr-3"></i> 挑戰開始
+                </button>
+            </div>
+
+            <!-- 關卡遊戲內容 -->
+            <div id="lvl3-game-screen" class="hidden flex-col justify-between min-h-[550px] bg-slate-900/90 rounded-3xl border-2 border-slate-700 p-8 md:p-10 shadow-2xl">
                 <!-- 題目標頭與分數及重置按鈕 -->
-                <div class="flex justify-between items-center border-b border-slate-700 pb-4">
-                    <div class="flex items-center gap-4">
-                        <span id="quiz-progress-txt" class="text-emerald-400 font-bold text-2xl">第 1 / 4 題</span>
-                        <button onclick="resetLevel3()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl font-bold transition-all text-sm">
-                            <i class="fa-solid fa-rotate-left mr-1"></i> 重置挑戰
+                <div class="flex justify-between items-center border-b-2 border-slate-700 pb-5">
+                    <div class="flex items-center gap-6">
+                        <span id="quiz-progress-txt" class="text-emerald-400 font-black text-3xl">第 1 / 4 題</span>
+                        <button onclick="resetLevel3()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-2xl font-black text-base border-2 border-slate-600 transition-all">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> 重置本關
                         </button>
                     </div>
-                    <span id="quiz-score-txt" class="text-amber-400 font-black text-2xl"><i class="fa-solid fa-trophy mr-2"></i>得分：0</span>
+                    <span id="quiz-score-txt" class="text-amber-400 font-black text-3xl"><i class="fa-solid fa-trophy mr-3"></i>得分：0</span>
                 </div>
 
                 <!-- 題目描述 -->
-                <div class="my-6">
-                    <h3 id="quiz-question-txt" class="text-2xl md:text-3xl font-black text-white leading-relaxed">
+                <div class="my-6 flex flex-col gap-6 items-center">
+                    <h3 id="quiz-question-txt" class="text-3xl md:text-4xl font-black text-white leading-relaxed w-full">
                         載入中...
                     </h3>
                 </div>
 
                 <!-- 選項按鈕區 -->
-                <div id="quiz-options-box" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-2">
+                <div id="quiz-options-box" class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
                     <!-- 動態渲染選項 -->
                 </div>
 
                 <!-- 答案解析回饋 -->
-                <div id="quiz-feedback-box" class="hidden mt-4 p-5 rounded-2xl bg-slate-900 border border-slate-700">
-                    <p id="feedback-res" class="font-bold text-2xl mb-1"></p>
-                    <p id="feedback-exp" class="text-slate-300 text-lg"></p>
-                    <button onclick="nextQuizQuestion()" class="mt-4 px-6 py-3 bg-emerald-500 text-slate-900 font-black text-lg rounded-xl hover:bg-emerald-400 transition-all">
-                        下一題 <i class="fa-solid fa-arrow-right ml-1"></i>
+                <div id="quiz-feedback-box" class="hidden mt-6 p-6 rounded-3xl bg-slate-950 border-2 border-slate-700 shadow-xl">
+                    <p id="feedback-res" class="font-black text-3xl mb-2"></p>
+                    <p id="feedback-exp" class="text-slate-200 text-2xl font-bold leading-relaxed"></p>
+                    <button onclick="nextQuizQuestion()" class="mt-6 px-8 py-4 bg-emerald-500 text-slate-950 font-black text-2xl rounded-2xl hover:bg-emerald-400 transition-all">
+                        下一題 <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
@@ -215,41 +255,68 @@
 
     </main>
 
-    <!-- ==================== 獵人能力卡牌抽出小動畫 (Modal) ==================== -->
-    <div id="card-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="max-w-md w-full flex flex-col items-center gap-6 text-center">
-            <h2 id="modal-title" class="text-3xl md:text-4xl font-black text-amber-400 tracking-wide animate-bounce">
+    <!-- 錯誤提示大螢幕 Modal -->
+    <div id="error-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-6">
+        <div class="max-w-2xl w-full bg-slate-900 border-4 border-rose-500 rounded-3xl p-8 shadow-2xl text-center flex flex-col items-center gap-6">
+            <div class="bg-rose-500/20 p-5 rounded-full border-2 border-rose-400">
+                <i class="fa-solid fa-triangle-exclamation text-6xl text-rose-400"></i>
+            </div>
+            <h3 id="error-modal-title" class="text-3xl md:text-4xl font-black text-rose-400">答案有誤！</h3>
+            <p id="error-modal-msg" class="text-slate-200 text-2xl font-bold leading-relaxed text-left bg-slate-950 p-6 rounded-2xl border border-slate-800 w-full">
+                提示內容...
+            </p>
+            <button onclick="closeErrorModal()" class="px-10 py-4 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-2xl rounded-2xl transition-all shadow-lg">
+                我知道了，重新嘗試 <i class="fa-solid fa-rotate-right ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== 獵人能力卡牌抽出 & 多功能選單 (Modal) ==================== -->
+    <div id="card-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-lg z-50 hidden flex items-center justify-center p-6">
+        <div class="max-w-xl w-full flex flex-col items-center gap-6 text-center">
+            <h2 id="modal-title" class="text-4xl md:text-5xl font-black text-amber-400 tracking-wider animate-bounce">
                 🎉 恭喜通關！獲得念能力卡牌
             </h2>
-            <p id="modal-time-desc" class="text-slate-200 text-xl font-bold bg-slate-800 px-6 py-2 rounded-full border border-amber-500/50">
+            <p id="modal-time-desc" class="text-slate-100 text-2xl font-extrabold bg-slate-800 px-8 py-3 rounded-full border-2 border-amber-500 shadow-lg">
                 通關花費時間：00:00
             </p>
 
-            <!-- 3D 翻牌動畫容器 -->
-            <div id="card-flipper" class="w-72 h-[420px] cursor-pointer perspective-1000 my-2" onclick="revealCard()">
+            <!-- 3D 翻牌動畫容器 (超高解析度視覺) -->
+            <div id="card-flipper" class="w-80 h-[480px] cursor-pointer perspective-1000 my-3" onclick="revealCard()">
                 <div id="card-inner" class="card-flip-inner w-full h-full relative rounded-3xl glow-card">
                     <!-- 卡牌背面 (未翻開) -->
-                    <div class="card-front absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl border-4 border-amber-500 flex flex-col items-center justify-center p-6 text-amber-400">
-                        <i class="fa-solid fa-meteor text-6xl animate-spin mb-4 text-amber-400" style="animation-duration: 8s;"></i>
-                        <span class="text-2xl font-black tracking-widest">HUNTER</span>
-                        <span class="text-sm font-bold text-slate-400 mt-2">點擊翻開卡牌</span>
+                    <div class="card-front absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl border-4 border-amber-400 flex flex-col items-center justify-center p-8 text-amber-400">
+                        <i class="fa-solid fa-meteor text-7xl animate-spin mb-6 text-amber-400" style="animation-duration: 8s;"></i>
+                        <span class="text-3xl font-black tracking-widest">HUNTER</span>
+                        <span class="text-lg font-bold text-slate-300 mt-4 bg-amber-500/20 px-4 py-2 rounded-full border border-amber-400/50">點擊翻開獎勵卡牌</span>
                     </div>
 
                     <!-- 卡牌正面 (翻開後) -->
-                    <div id="card-front-content" class="card-back absolute inset-0 bg-slate-900 rounded-3xl border-4 border-amber-400 flex flex-col justify-between p-6 text-left shadow-2xl">
+                    <div id="card-front-content" class="card-back absolute inset-0 bg-slate-900 rounded-3xl border-4 border-amber-400 flex flex-col justify-between p-8 text-left shadow-2xl">
                         <!-- 動態填充卡牌內容 -->
                     </div>
                 </div>
             </div>
 
-            <button id="close-modal-btn" onclick="closeCardModal()" class="hidden px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-black text-xl rounded-2xl transition-all shadow-lg">
-                前往下一關 / 領取獎勵
-            </button>
+            <!-- 通關後多元選擇按鈕群 -->
+            <div id="post-draw-actions" class="hidden flex flex-col gap-4 w-full mt-2">
+                <button id="btn-next-lvl" onclick="actionGoNextLevel()" class="w-full py-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-2xl rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-forward-step"></i> 前往下一關
+                </button>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="actionReplayCurrentLevel()" class="py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xl rounded-2xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> 重新挑戰本關
+                    </button>
+                    <button onclick="actionGoLevel1()" class="py-4 bg-sky-600 hover:bg-sky-500 text-white font-black text-xl rounded-2xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-house"></i> 回到第一關
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- 頁尾 -->
-    <footer class="bg-slate-800 border-t border-slate-700 text-center py-3 text-slate-400 text-sm">
+    <footer class="bg-slate-900 border-t border-slate-800 text-center py-4 text-slate-400 text-base font-bold">
         國中自然 1 上課本 實驗 2.3 光合作用探討 ｜ 獵人念能力互動學習大螢幕系統
     </footer>
 
@@ -263,8 +330,7 @@
                 user: "小傑·富力士",
                 desc: "將大量的念能力集中於拳頭上，釋放強大的近身破壞力，專門突破任何防禦！",
                 icon: "fa-hand-fist",
-                color: "from-amber-500 to-red-600",
-                bg: "bg-amber-950/40"
+                color: "from-amber-500 to-red-600"
             },
             {
                 name: "奇犽 · 神速 (疾風迅雷)",
@@ -272,8 +338,7 @@
                 user: "奇犽·揍敵客",
                 desc: "將氣轉化為電擊神經系統，超越大腦反射極限，以極快速度進行反應與攻擊！",
                 icon: "fa-bolt-lightning",
-                color: "from-cyan-400 to-blue-600",
-                bg: "bg-blue-950/40"
+                color: "from-cyan-400 to-blue-600"
             },
             {
                 name: "酷拉皮卡 · 束縛中指鏈",
@@ -281,8 +346,7 @@
                 user: "酷拉皮卡",
                 desc: "專門鎖定目標的強烈念鎖鏈，能強制將對方困在絕的狀態，使其無法使用念力！",
                 icon: "fa-link",
-                color: "from-yellow-400 to-amber-600",
-                bg: "bg-yellow-950/40"
+                color: "from-yellow-400 to-amber-600"
             },
             {
                 name: "西索 · 伸縮自如的愛",
@@ -290,8 +354,7 @@
                 user: "西索",
                 desc: "將氣賦予口香糖與橡膠雙重性質，具備極強黏性與彈力，能自由控制黏附與收回！",
                 icon: "fa-heart",
-                color: "from-pink-500 to-rose-600",
-                bg: "bg-rose-950/40"
+                color: "from-pink-500 to-rose-600"
             },
             {
                 name: "庫洛洛 · 盜賊的極意",
@@ -299,8 +362,7 @@
                 user: "庫洛洛·魯西魯",
                 desc: "具現化出一本精裝書，在滿足特定條件後能奪取對手的念能力並封存在書中隨時呼喚！",
                 icon: "fa-book-skull",
-                color: "from-purple-600 to-slate-900",
-                bg: "bg-purple-950/40"
+                color: "from-purple-600 to-slate-900"
             },
             {
                 name: "雷歐力 · 超音波脈衝打擊",
@@ -308,8 +370,7 @@
                 user: "雷歐力·奈特利",
                 desc: "配合醫學知識，將念透過地面或物體傳導出去，直接擊中對手的內臟與盲點！",
                 icon: "fa-user-doctor",
-                color: "from-emerald-500 to-teal-700",
-                bg: "bg-emerald-950/40"
+                color: "from-emerald-500 to-teal-700"
             },
             {
                 name: "尼特羅 · 百式觀音",
@@ -317,17 +378,15 @@
                 user: "艾薩克·尼特羅",
                 desc: "召喚巨型黃金千手觀音，以無可匹敵的速度與打擊數做出絕對防禦與毀滅性打擊！",
                 icon: "fa-hands-praying",
-                color: "from-yellow-300 to-amber-500",
-                bg: "bg-amber-950/50"
+                color: "from-yellow-300 to-amber-500"
             },
             {
-                name: "凱特 · 瘋狂小丑 (瘋狂小丑3號)",
+                name: "凱特 · 瘋狂小丑 (3號)",
                 type: "具現化系",
                 user: "凱特",
                 desc: "召喚隨機出現1~9號武器的小丑嘴巴，依抽中的號碼發揮絕大的專屬戰鬥技能！",
                 icon: "fa-dice",
-                color: "from-sky-400 to-indigo-600",
-                bg: "bg-indigo-950/40"
+                color: "from-sky-400 to-indigo-600"
             },
             {
                 name: "飛坦 · 太陽 (受害者之聲)",
@@ -335,8 +394,7 @@
                 user: "飛坦",
                 desc: "將自己受到的傷害轉化為高熱能量，召喚宛如微型太陽一般的熾熱火球燒毀範圍內一切對手！",
                 icon: "fa-sun",
-                color: "from-orange-500 to-red-700",
-                bg: "bg-red-950/40"
+                color: "from-orange-500 to-red-700"
             },
             {
                 name: "伊耳謎 · 針人控術",
@@ -344,8 +402,7 @@
                 user: "伊耳謎·揍敵客",
                 desc: "將特殊的念針刺入目標頭部或人體，能夠對其進行完全操控或改寫容貌外觀！",
                 icon: "fa-syringe",
-                color: "from-violet-500 to-purple-800",
-                bg: "bg-purple-950/40"
+                color: "from-violet-500 to-purple-800"
             }
         ];
 
@@ -353,27 +410,27 @@
         const standardSteps = [
             {
                 id: 1,
-                title: "步驟一：遮光處理",
-                detail: "用長條鋁箔包住葉片中間段，並用迴紋針固定，阻隔光照 5~7 天。",
+                name: "遮光處理",
+                detail: "用長條鋁箔包住葉片中間段並用迴紋針固定，阻隔光照 5~7 天。",
                 purpose: "設置對照組與實驗組，探討『光照』對光合作用的影響。"
             },
             {
                 id: 2,
-                title: "步驟二：沸水加熱",
+                name: "沸水加熱",
                 detail: "摘下葉片並取下鋁箔後，將葉片放入沸水中加熱數分鐘。",
                 purpose: "破壞葉片細胞膜與軟化角質層，增加細胞通透性。"
             },
             {
                 id: 3,
-                title: "步驟三：酒精去色",
+                name: "酒精去色與漂洗",
                 detail: "將葉片浸入酒精中隔水加熱褪色，再放入熱水中漂洗。",
-                purpose: "溶解並抽出葉綠素（去除顏色），利於觀察觀察顯色。"
+                purpose: "溶解並抽出葉綠素（去除綠色），利於後續觀察顯色。"
             },
             {
                 id: 4,
-                title: "步驟四：滴加碘液",
-                detail: "將漂洗後的葉片平放於培養皿中，滴加黃褐色的碘液檢驗。",
-                purpose: "利用碘液檢驗澱粉（若有澱粉呈藍黑色，無則呈黃褐色）。"
+                name: "滴加碘液檢驗",
+                detail: "將漂洗後的葉片平放於培養皿中，滴加黃褐色碘液檢驗。",
+                purpose: "利用碘液檢驗澱粉（有澱粉呈藍黑色，無則呈黃褐色）。"
             }
         ];
 
@@ -381,11 +438,12 @@
         let currentLevel = 1;
         let timerInterval = null;
         let timerSeconds = 0;
+        let isTimerRunning = false;
 
-        // 啟動計時器
         function startTimer() {
             clearInterval(timerInterval);
             timerSeconds = 0;
+            isTimerRunning = true;
             updateTimerDisplay();
             timerInterval = setInterval(() => {
                 timerSeconds++;
@@ -393,9 +451,9 @@
             }, 1000);
         }
 
-        // 停止計時器並回傳 formatted time
         function stopTimer() {
             clearInterval(timerInterval);
+            isTimerRunning = false;
             return getFormattedTime();
         }
 
@@ -409,27 +467,40 @@
             return `${mins}:${secs}`;
         }
 
-        // 切換關卡
+        // 切換關卡選單
         function switchLevel(lvl) {
             currentLevel = lvl;
+            clearInterval(timerInterval);
+            timerSeconds = 0;
+            updateTimerDisplay();
+
             for (let i = 1; i <= 3; i++) {
                 const sec = document.getElementById(`level-${i}`);
                 const tab = document.getElementById(`tab-lvl-${i}`);
                 if (i === lvl) {
                     sec.classList.remove('hidden');
                     sec.classList.add('flex');
-                    tab.className = "px-4 py-2 rounded-xl font-bold text-base transition-all bg-emerald-600 text-white shadow-md";
+                    tab.className = "px-5 py-3 rounded-2xl font-black text-xl transition-all bg-emerald-600 text-white shadow-lg";
                 } else {
                     sec.classList.add('hidden');
                     sec.classList.remove('flex');
-                    tab.className = "px-4 py-2 rounded-xl font-bold text-base transition-all text-slate-400 hover:text-white";
+                    tab.className = "px-5 py-3 rounded-2xl font-black text-xl transition-all text-slate-400 hover:text-white";
                 }
-            }
 
-            // 重新啟動當前關卡計時器
+                // 顯示「開始挑戰」畫面，隱藏遊戲畫面
+                document.getElementById(`lvl${i}-start-screen`).classList.remove('hidden');
+                document.getElementById(`lvl${i}-game-screen`).classList.add('hidden');
+            }
+        }
+
+        // 按下「挑戰開始」按鈕觸發
+        function startLevelChallenge(lvl) {
+            document.getElementById(`lvl${lvl}-start-screen`).classList.add('hidden');
+            document.getElementById(`lvl${lvl}-game-screen`).classList.remove('hidden');
+            document.getElementById(`lvl${lvl}-game-screen`).classList.add('flex');
+
             startTimer();
 
-            // 初始各關卡內容
             if (lvl === 1) initLevel1();
             if (lvl === 2) initLevel2();
             if (lvl === 3) initLevel3();
@@ -446,40 +517,49 @@
         }
 
         function renderLevel1() {
-            // 渲染排序槽位
-            const slots = document.getElementById('sort-slots').children;
+            const slotsContainer = document.getElementById('sort-slots');
+            
+            if (slotsContainer.children.length === 0) {
+                slotsContainer.innerHTML = [0,1,2,3].map(i => `
+                    <div class="slot border-4 border-dashed border-slate-600 rounded-3xl min-h-[160px] p-4 flex flex-col justify-center items-center text-slate-500 font-black text-2xl bg-slate-900/60" data-slot="${i}">
+                        步驟 ${i + 1} 放置處
+                    </div>
+                `).join('');
+            }
+
+            const currentSlots = slotsContainer.children;
             for (let i = 0; i < 4; i++) {
-                const slot = slots[i];
+                const slot = currentSlots[i];
                 const step = level1UserOrder[i];
                 if (step) {
-                    slot.className = "slot border-2 border-emerald-500/80 rounded-2xl min-h-[110px] p-4 flex flex-col justify-center items-start bg-slate-800 text-white font-bold cursor-pointer transition-all hover:border-red-400 shadow-md";
+                    slot.className = "slot border-4 border-emerald-500 rounded-3xl min-h-[160px] p-5 flex flex-col justify-between bg-slate-800 text-white font-bold cursor-pointer transition-all hover:border-red-400 shadow-xl";
                     slot.innerHTML = `
                         <div class="flex justify-between w-full items-center mb-1">
-                            <span class="text-xs text-emerald-400 font-extrabold uppercase">位置 ${i+1}</span>
-                            <span class="text-xs text-rose-400">點擊移除</span>
+                            <span class="text-sm text-emerald-400 font-black uppercase">位置 ${i+1}</span>
+                            <span class="text-xs text-rose-400 font-bold bg-rose-950/60 px-2 py-1 rounded-md">點擊移除</span>
                         </div>
-                        <p class="text-base font-bold text-amber-300">${step.title}</p>
-                        <p class="text-xs text-slate-300 mt-1 line-clamp-2">${step.detail}</p>
+                        <p class="text-2xl font-black text-amber-300">${step.name}</p>
+                        <p class="text-base text-slate-300 font-bold mt-1 line-clamp-2">${step.detail}</p>
                     `;
                     slot.onclick = () => removeStepFromSlot(i);
                 } else {
-                    slot.className = "slot border-2 border-dashed border-slate-600 rounded-2xl min-h-[110px] p-4 flex flex-col justify-center items-center text-slate-500 font-bold text-lg bg-slate-900/50";
+                    slot.className = "slot border-4 border-dashed border-slate-600 rounded-3xl min-h-[160px] p-4 flex flex-col justify-center items-center text-slate-500 font-black text-2xl bg-slate-900/60";
                     slot.innerText = `步驟 ${i + 1} 放置處`;
                     slot.onclick = null;
                 }
             }
 
-            // 渲染待選池
+            // 渲染待選池 (只顯示標題與詳細動作，不帶「步驟一」字眼)
             const pool = document.getElementById('step-pool');
             pool.innerHTML = '';
             shuffledSteps.forEach(step => {
                 const isSelected = level1UserOrder.some(s => s && s.id === step.id);
                 if (!isSelected) {
                     const card = document.createElement('div');
-                    card.className = "p-4 bg-slate-800 hover:bg-slate-700 border-2 border-slate-600 hover:border-emerald-400 rounded-2xl cursor-pointer transition-all flex flex-col gap-1 shadow-lg";
+                    card.className = "p-6 bg-slate-800 hover:bg-slate-700 border-3 border-slate-600 hover:border-emerald-400 rounded-3xl cursor-pointer transition-all flex flex-col gap-2 shadow-2xl";
                     card.innerHTML = `
-                        <h4 class="text-lg font-bold text-amber-300">${step.title}</h4>
-                        <p class="text-sm text-slate-300">${step.detail}</p>
+                        <h4 class="text-2xl font-black text-amber-300">${step.name}</h4>
+                        <p class="text-lg text-slate-200 font-bold">${step.detail}</p>
                     `;
                     card.onclick = () => placeStepInSlot(step);
                     pool.appendChild(card);
@@ -493,7 +573,7 @@
                 level1UserOrder[firstEmptyIndex] = step;
                 renderLevel1();
             } else {
-                alert("位置已滿！請先點擊槽位移除卡片後再重新放置。");
+                showErrorModal("放置區已滿", "所有位置皆已放滿卡片！若要替換，請點擊上方已放置的卡片將其移除。");
             }
         }
 
@@ -508,24 +588,25 @@
 
         function checkLevel1() {
             if (level1UserOrder.includes(null)) {
-                alert("請將 4 個步驟完整放置後再送出驗證！");
+                showErrorModal("未完成填寫", "請將 4 個實驗動作完全放滿後再送出驗證！");
                 return;
             }
 
             const isCorrect = level1UserOrder.every((step, idx) => step.id === idx + 1);
             if (isCorrect) {
                 const elapsedTime = stopTimer();
-                triggerCardDraw("第一關：實驗步驟排序成功！", elapsedTime, () => {
-                    switchLevel(2);
-                });
+                triggerCardDraw("第一關：步驟排序完全正確！", elapsedTime);
             } else {
-                alert("❌ 步驟順序不對喔！提示：遮光對照 → 沸水軟化 → 酒精去色 → 滴加碘液。請再試一次！");
+                showErrorModal(
+                    "順序有誤！請重新思考", 
+                    "💡 <b>實驗邏輯提示：</b><br>1. 先進行<b>遮光對照</b>（長條鋁箔）<br>2. <b>沸水加熱</b>破壞細胞膜與角質層<br>3. <b>酒精去色</b>（隔水加熱）溶出葉綠素<br>4. 最後<b>滴加碘液</b>檢驗澱粉藍黑色反應。"
+                );
             }
         }
 
         // ==================== 第二關：步驟與目的配對邏輯 ====================
         let selectedStepId = null;
-        let matchedPairs = {}; // { stepId: purposeId }
+        let matchedPairs = {};
         let shuffledPurposes = [];
 
         function initLevel2() {
@@ -538,7 +619,6 @@
         }
 
         function renderLevel2() {
-            // 渲染左側步驟
             const stepsBox = document.getElementById('match-steps');
             stepsBox.innerHTML = '';
             standardSteps.forEach(s => {
@@ -547,16 +627,16 @@
                 const isMatched = matchedPairs[s.id] !== undefined;
 
                 let borderStyle = "border-slate-700 bg-slate-800";
-                if (isSelected) borderStyle = "border-amber-400 bg-amber-950/40 text-amber-200 ring-2 ring-amber-400";
-                if (isMatched) borderStyle = "border-emerald-500 bg-emerald-950/30 text-emerald-300";
+                if (isSelected) borderStyle = "border-amber-400 bg-amber-950/60 ring-4 ring-amber-400 text-amber-200";
+                if (isMatched) borderStyle = "border-emerald-500 bg-emerald-950/40 text-emerald-300";
 
-                card.className = `p-4 rounded-2xl border-2 ${borderStyle} cursor-pointer transition-all flex justify-between items-center shadow-md`;
+                card.className = `p-5 rounded-3xl border-3 ${borderStyle} cursor-pointer transition-all flex items-center justify-between gap-4 shadow-xl`;
                 card.innerHTML = `
                     <div>
-                        <h4 class="text-lg font-bold">${s.title}</h4>
-                        <p class="text-xs text-slate-400 mt-0.5">${s.detail}</p>
+                        <h4 class="text-2xl font-black">${s.name}</h4>
+                        <p class="text-base text-slate-300 font-bold mt-1">${s.detail}</p>
                     </div>
-                    ${isMatched ? '<i class="fa-solid fa-link text-emerald-400 text-xl"></i>' : ''}
+                    ${isMatched ? '<i class="fa-solid fa-link text-emerald-400 text-3xl"></i>' : ''}
                 `;
                 card.onclick = () => {
                     selectedStepId = s.id;
@@ -565,22 +645,20 @@
                 stepsBox.appendChild(card);
             });
 
-            // 渲染右側目的
             const purpBox = document.getElementById('match-purposes');
             purpBox.innerHTML = '';
             shuffledPurposes.forEach(p => {
                 const card = document.createElement('div');
-                // 檢查是否有步驟已配對此目的
                 const matchedStepId = Object.keys(matchedPairs).find(key => matchedPairs[key] === p.id);
                 const isMatched = matchedStepId !== undefined;
 
                 let borderStyle = "border-slate-700 bg-slate-800";
-                if (isMatched) borderStyle = "border-emerald-500 bg-emerald-950/30 text-emerald-300";
+                if (isMatched) borderStyle = "border-emerald-500 bg-emerald-950/40 text-emerald-300";
 
-                card.className = `p-4 rounded-2xl border-2 ${borderStyle} cursor-pointer transition-all flex justify-between items-center shadow-md`;
+                card.className = `p-6 rounded-3xl border-3 ${borderStyle} cursor-pointer transition-all flex justify-between items-center min-h-[96px] shadow-xl`;
                 card.innerHTML = `
-                    <p class="text-base font-semibold">${p.purpose}</p>
-                    ${isMatched ? '<i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>' : ''}
+                    <p class="text-xl font-bold leading-snug">${p.purpose}</p>
+                    ${isMatched ? '<i class="fa-solid fa-circle-check text-emerald-400 text-3xl"></i>' : ''}
                 `;
                 card.onclick = () => {
                     if (selectedStepId !== null) {
@@ -588,7 +666,7 @@
                         selectedStepId = null;
                         renderLevel2();
                     } else {
-                        alert("請先在左側選取一個實驗步驟，再點擊對應的目的進行配對！");
+                        showErrorModal("提示", "請先點擊左側的一個實驗步驟，再點擊右側相對應的目的進行配對連線！");
                     }
                 };
                 purpBox.appendChild(card);
@@ -601,18 +679,19 @@
 
         function checkLevel2() {
             if (Object.keys(matchedPairs).length < 4) {
-                alert("請將所有 4 個步驟與目的完整進行配對！");
+                showErrorModal("未完成配對", "請將所有 4 個步驟與目的完整進行配對後再提交！");
                 return;
             }
 
             const isCorrect = Object.keys(matchedPairs).every(stepId => parseInt(stepId) === matchedPairs[stepId]);
             if (isCorrect) {
                 const elapsedTime = stopTimer();
-                triggerCardDraw("第二關：步驟與目的配對完美正確！", elapsedTime, () => {
-                    switchLevel(3);
-                });
+                triggerCardDraw("第二關：步驟與目的完美配對成功！", elapsedTime);
             } else {
-                alert("❌ 部分步驟與目的配對有誤，請再仔細思考科學原理後重試！");
+                showErrorModal(
+                    "配對有誤", 
+                    "💡 <b>配對重點提示：</b><br>• 酒精去色 ➔ 溶解葉綠素<br>• 沸水加熱 ➔ 破壞細胞膜與軟化角質層<br>• 滴加碘液 ➔ 檢驗有無澱粉生成<br>• 長條鋁箔 ➔ 探討光照變因。"
+                );
             }
         }
 
@@ -628,7 +707,7 @@
                 q: "2. 進行「酒精去色」實驗時，為何一定要採取『隔水加熱』？",
                 opts: ["A. 酒精易燃，直接加熱容易引燃起火危險", "B. 隔水加熱才能提高酒精沸點", "C. 防止葉片破裂", "D. 讓碘液變色更深"],
                 ans: 0,
-                exp: "酒精屬於易燃液體，不可直接在火焰上加熱！必須隔水加熱且燒杯不可加蓋以維護實驗安全。"
+                exp: "酒精屬於易燃液體，不可直接在火焰上加熱！必須隔水加熱且燒杯不可加蓋以維護安全。"
             },
             {
                 q: "3. 葉片去色並漂洗後滴加「黃褐色碘液」，未遮光部分呈藍黑色，代表什麼？",
@@ -661,7 +740,7 @@
         function loadQuizQuestion() {
             const currentQ = quizQuestions[quizIndex];
             document.getElementById('quiz-progress-txt').innerText = `第 ${quizIndex + 1} / ${quizQuestions.length} 題`;
-            document.getElementById('quiz-score-txt').innerHTML = `<i class="fa-solid fa-trophy mr-2"></i>得分：${quizScore}`;
+            document.getElementById('quiz-score-txt').innerHTML = `<i class="fa-solid fa-trophy mr-3"></i>得分：${quizScore}`;
             document.getElementById('quiz-question-txt').innerText = currentQ.q;
             document.getElementById('quiz-feedback-box').classList.add('hidden');
 
@@ -670,7 +749,7 @@
 
             currentQ.opts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "p-5 bg-slate-700/80 hover:bg-slate-600 text-left rounded-2xl text-xl font-bold transition-all border-2 border-slate-600 text-slate-100 flex items-center justify-between shadow-md";
+                btn.className = "p-6 bg-slate-800 hover:bg-slate-700 text-left rounded-3xl text-2xl font-bold transition-all border-3 border-slate-600 text-slate-100 flex items-center justify-between shadow-xl";
                 btn.innerText = opt;
                 btn.onclick = () => answerQuiz(idx);
                 optionsBox.appendChild(btn);
@@ -688,15 +767,15 @@
 
             if (selectedIdx === currentQ.ans) {
                 quizScore += 25;
-                document.getElementById('quiz-score-txt').innerHTML = `<i class="fa-solid fa-trophy mr-2"></i>得分：${quizScore}`;
-                resTxt.className = "font-bold text-2xl text-emerald-400";
+                document.getElementById('quiz-score-txt').innerHTML = `<i class="fa-solid fa-trophy mr-3"></i>得分：${quizScore}`;
+                resTxt.className = "font-black text-3xl text-emerald-400";
                 resTxt.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i>回答正確！`;
-                optionBtns[selectedIdx].className = "p-5 bg-emerald-600/30 text-emerald-300 rounded-2xl text-xl font-extrabold border-2 border-emerald-400 flex items-center justify-between";
+                optionBtns[selectedIdx].className = "p-6 bg-emerald-600/40 text-emerald-300 rounded-3xl text-2xl font-black border-4 border-emerald-400 flex items-center justify-between";
             } else {
-                resTxt.className = "font-bold text-2xl text-rose-400";
+                resTxt.className = "font-black text-3xl text-rose-400";
                 resTxt.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i>回答錯誤！`;
-                optionBtns[selectedIdx].className = "p-5 bg-rose-600/30 text-rose-300 rounded-2xl text-xl font-extrabold border-2 border-rose-500 flex items-center justify-between";
-                optionBtns[currentQ.ans].className = "p-5 bg-emerald-600/30 text-emerald-300 rounded-2xl text-xl font-extrabold border-2 border-emerald-400 flex items-center justify-between";
+                optionBtns[selectedIdx].className = "p-6 bg-rose-600/40 text-rose-300 rounded-3xl text-2xl font-black border-4 border-rose-500 flex items-center justify-between";
+                optionBtns[currentQ.ans].className = "p-6 bg-emerald-600/40 text-emerald-300 rounded-3xl text-2xl font-black border-4 border-emerald-400 flex items-center justify-between";
             }
 
             expTxt.innerText = currentQ.exp;
@@ -709,76 +788,100 @@
                 loadQuizQuestion();
             } else {
                 const elapsedTime = stopTimer();
-                triggerCardDraw(`第三關通關完成！得分：${quizScore} 分`, elapsedTime, () => {
-                    alert("🎉 恭喜完成全部三關試煉！您已完美掌握實驗 2.3 的所有核心原理！");
-                });
+                triggerCardDraw(`第三關挑戰完成！得分：${quizScore} 分`, elapsedTime);
             }
         }
 
-        // ==================== 獵人抽卡動畫 Modal 邏輯 ====================
-        let nextLevelCallback = null;
+        // ==================== 錯誤 Modal 顯示輔助函數 ====================
+        function showErrorModal(title, msg) {
+            document.getElementById('error-modal-title').innerText = title;
+            document.getElementById('error-modal-msg').innerHTML = msg;
+            document.getElementById('error-modal').classList.remove('hidden');
+        }
+
+        function closeErrorModal() {
+            document.getElementById('error-modal').classList.add('hidden');
+        }
+
+        // ==================== 獵人抽卡與多元選單系統 ====================
         let drawnCard = null;
 
-        function triggerCardDraw(titleText, timeUsedStr, onNext) {
-            nextLevelCallback = onNext;
+        function triggerCardDraw(titleText, timeUsedStr) {
             document.getElementById('modal-title').innerText = titleText;
             document.getElementById('modal-time-desc').innerText = `通關花費時間：${timeUsedStr}`;
 
-            // 隨機抽選卡牌
             drawnCard = hunterCards[Math.floor(Math.random() * hunterCards.length)];
 
-            // 重置卡牌轉動狀態
             const cardInner = document.getElementById('card-inner');
-            const closeBtn = document.getElementById('close-modal-btn');
+            const postActions = document.getElementById('post-draw-actions');
             cardInner.classList.remove('card-flipped');
-            closeBtn.classList.add('hidden');
+            postActions.classList.add('hidden');
 
-            // 顯示 Modal
             document.getElementById('card-modal').classList.remove('hidden');
         }
 
         function revealCard() {
             const cardInner = document.getElementById('card-inner');
             const frontBox = document.getElementById('card-front-content');
-            const closeBtn = document.getElementById('close-modal-btn');
+            const postActions = document.getElementById('post-draw-actions');
 
             if (!cardInner.classList.contains('card-flipped')) {
-                // 裝填抽取到的卡牌資料
-                frontBox.className = `card-back absolute inset-0 rounded-3xl border-4 border-amber-400 flex flex-col justify-between p-6 text-left shadow-2xl bg-gradient-to-br ${drawnCard.color}`;
+                frontBox.className = `card-back absolute inset-0 rounded-3xl border-4 border-amber-400 flex flex-col justify-between p-8 text-left shadow-2xl bg-gradient-to-br ${drawnCard.color}`;
                 frontBox.innerHTML = `
                     <div>
-                        <div class="flex justify-between items-center border-b border-white/20 pb-2 mb-3">
-                            <span class="text-xs font-black px-3 py-1 bg-black/40 text-amber-300 rounded-full border border-amber-400/50 uppercase">${drawnCard.type}</span>
-                            <span class="text-xs text-white/80 font-bold">${drawnCard.user}</span>
+                        <div class="flex justify-between items-center border-b border-white/20 pb-3 mb-4">
+                            <span class="text-sm font-black px-4 py-1.5 bg-black/50 text-amber-300 rounded-full border border-amber-400/50 uppercase">${drawnCard.type}</span>
+                            <span class="text-sm text-white font-extrabold">${drawnCard.user}</span>
                         </div>
-                        <div class="flex items-center gap-3 mb-2">
-                            <i class="fa-solid ${drawnCard.icon} text-3xl text-amber-300"></i>
-                            <h3 class="text-xl font-black text-white leading-tight">${drawnCard.name}</h3>
+                        <div class="flex items-center gap-4 mb-3">
+                            <i class="fa-solid ${drawnCard.icon} text-4xl text-amber-300"></i>
+                            <h3 class="text-2xl font-black text-white leading-tight">${drawnCard.name}</h3>
                         </div>
-                        <p class="text-xs text-slate-100/90 leading-relaxed bg-black/30 p-3 rounded-xl border border-white/10 mt-2">
+                        <p class="text-base text-slate-100 font-bold leading-relaxed bg-black/40 p-4 rounded-2xl border border-white/10 mt-3">
                             ${drawnCard.desc}
                         </p>
                     </div>
-                    <div class="border-t border-white/20 pt-2 text-center">
-                        <span class="text-xs text-amber-200 font-extrabold tracking-widest">HUNTER × HUNTER CARD</span>
+                    <div class="border-t border-white/20 pt-3 text-center">
+                        <span class="text-sm text-amber-200 font-black tracking-widest">HUNTER × HUNTER CARD</span>
                     </div>
                 `;
 
-                // 觸發 3D 翻牌動畫
                 cardInner.classList.add('card-flipped');
 
+                // 動畫翻開後顯示按鈕選單
                 setTimeout(() => {
-                    closeBtn.classList.remove('hidden');
+                    postActions.classList.remove('hidden');
+                    const btnNext = document.getElementById('btn-next-lvl');
+                    if (currentLevel >= 3) {
+                        btnNext.classList.add('hidden');
+                    } else {
+                        btnNext.classList.remove('hidden');
+                    }
                 }, 800);
             }
         }
 
-        function closeCardModal() {
+        // 動作 1：前往下一關
+        function actionGoNextLevel() {
             document.getElementById('card-modal').classList.add('hidden');
-            if (nextLevelCallback) nextLevelCallback();
+            if (currentLevel < 3) {
+                switchLevel(currentLevel + 1);
+            }
         }
 
-        // 初始化遊戲
+        // 動作 2：重新挑戰本關
+        function actionReplayCurrentLevel() {
+            document.getElementById('card-modal').classList.add('hidden');
+            switchLevel(currentLevel);
+        }
+
+        // 動作 3：回到第一關
+        function actionGoLevel1() {
+            document.getElementById('card-modal').classList.add('hidden');
+            switchLevel(1);
+        }
+
+        // 初始化
         window.onload = function() {
             switchLevel(1);
         };
